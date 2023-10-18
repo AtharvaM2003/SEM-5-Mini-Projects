@@ -1,4 +1,4 @@
-package AJP_Microproject;
+package DBMS_Java;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -22,7 +22,7 @@ public class FoodOrder_4 extends JFrame {
 		ta1 = new JTextArea("");
 		ta1.setBounds(500, 220, 100, 100);
 
-		ImageIcon i = new ImageIcon("A:/Programs/advJava/AJP_Microproject/pizza.png");
+		ImageIcon i = new ImageIcon("A:/Programs/Mini-Projects/DBMS_Java/pizza.png");
 		l1 = new JLabel(i);
 		l1.setBounds(30, 50, 200, 150);
 		bt = new JButton("Pizza");
@@ -35,7 +35,7 @@ public class FoodOrder_4 extends JFrame {
 			}
 		});
 
-		ImageIcon i1 = new ImageIcon("A:/Programs/advJava/AJP_Microproject/burger.png");
+		ImageIcon i1 = new ImageIcon("A:/Programs/Mini-Projects/DBMS_Java/burger.png");
 		l2 = new JLabel(i1);
 		l2.setBounds(20, 240, 200, 150);
 		bt1 = new JButton("Burger");
@@ -47,7 +47,7 @@ public class FoodOrder_4 extends JFrame {
 			}
 		});
 
-		ImageIcon i2 = new ImageIcon("A:/Programs/advJava/AJP_Microproject/sandwich.png");
+		ImageIcon i2 = new ImageIcon("A:/Programs/Mini-Projects/DBMS_Java/sandwich.png");
 		l3 = new JLabel(i2);
 		l3.setBounds(30, 450, 200, 140);
 		bt2 = new JButton("Sandwich");
@@ -59,7 +59,7 @@ public class FoodOrder_4 extends JFrame {
 			}
 		});
 
-		ImageIcon i4 = new ImageIcon("A:/Programs/advJava/AJP_Microproject/pasta.png");
+		ImageIcon i4 = new ImageIcon("A:/Programs/Mini-Projects/DBMS_Java/pasta.png");
 		l5 = new JLabel(i4);
 		l5.setBounds(250, 50, 200, 150);
 		bt4 = new JButton("Pasta");
@@ -71,7 +71,7 @@ public class FoodOrder_4 extends JFrame {
 			}
 		});
 
-		ImageIcon i5 = new ImageIcon("A:/Programs/advJava/AJP_Microproject/rice.png");
+		ImageIcon i5 = new ImageIcon("A:/Programs/Mini-Projects/DBMS_Java/rice.png");
 		l6 = new JLabel(i5);
 		l6.setBounds(250, 240, 200, 150);
 		bt5 = new JButton("Rice");
@@ -83,7 +83,7 @@ public class FoodOrder_4 extends JFrame {
 			}
 		});
 
-		ImageIcon i6 = new ImageIcon("A:/Programs/advJava/AJP_Microproject/tomato.png");
+		ImageIcon i6 = new ImageIcon("A:/Programs/Mini-Projects/DBMS_Java/tomato.png");
 		l7 = new JLabel(i6);
 		l7.setBounds(250, 450, 200, 140);
 		bt6 = new JButton("Tomato soup");

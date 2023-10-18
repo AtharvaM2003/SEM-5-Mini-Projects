@@ -1,6 +1,6 @@
-package AJP_Microproject;
+package DBMS_Java;
 
-import AJP_Microproject.FoodOrder_3;
+import DBMS_Java.FoodOrder_3;
 
 import java.sql.*;
 import javax.swing.JOptionPane;
