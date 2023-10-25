@@ -1,11 +1,10 @@
-
+import spacy
 from datetime import datetime, timedelta
+import pygame
 import tkinter as tk
 from tkinter import ttk, simpledialog, messagebox, filedialog
 import json
 import threading
-import spacy
-import pygame
 import speech_recognition as sr
 from gtts import gTTS
 import os
@@ -232,11 +231,6 @@ def schedule_tasks():
 
     # Handle alarms and update the task_data dictionary and listbox
     for i, task in enumerate(tasks):
-        if sound_choice.get() == "tts":
-            tts = gTTS(text=task, lang='en')
-            sound_path = f"{task.replace(' ', '_')}_tts.mp3"
-            tts.save(sound_path)
-            sound_paths.append(sound_path)  
         handle_alarm(task, priorities[i], sound_paths[i], descriptions[i])
         task_data[task] = {
             "priority": priorities[i],
@@ -256,7 +250,7 @@ def schedule_tasks():
         combo.set("Medium")
 
 
-#########################################################################################################################################################   
+
 
 def recognize_speech():
     r = sr.Recognizer()
@@ -284,11 +278,6 @@ def remove_task_by_name(task_name):
         return
 
     for item in items_to_remove:
-        # Cancel the alarm if it exists
-        if task_name in scheduled_alarms:
-            root.after_cancel(scheduled_alarms[task_name])
-            del scheduled_alarms[task_name]
-        
         tasks_treeview.delete(item)
 
     if task_name in task_data:
@@ -307,19 +296,13 @@ def complete_task_by_name(task_name):
         return
 
     for item in items_to_complete:
-        # Cancel the alarm if it exists
-        if task_name in scheduled_alarms:
-            root.after_cancel(scheduled_alarms[task_name])
-            del scheduled_alarms[task_name]
-        
-        # Change the color of the task in Treeview but retain it
         tasks_treeview.item(item, tags="completed")
         tasks_treeview.tag_configure("completed", background="lightgreen")
+        tasks_treeview.delete(item)  # or keep it if you prefer
 
     if task_name in task_data:
         del task_data[task_name]
     save_tasks()
-
 
 
 def voice_command():
@@ -327,8 +310,8 @@ def voice_command():
         voice_btn.config(text="Listening...")
         
         command = recognize_speech()
-        print(f"Recognized Command: {command}")
-
+        
+        # Display the recognized command in the transcription text widget
         transcription_text.delete(1.0, tk.END)
         transcription_text.insert(tk.END, command)
 
@@ -341,55 +324,16 @@ def voice_command():
             snooze(command.split()[-1])
         elif "remove" in command:
             task_to_remove = command.replace("remove", "").strip()
-            print(f"Task to Remove: {task_to_remove}")
-            remove_task_by_partial_name(task_to_remove)   # Ensure this function is called correctly
+            remove_task_by_name(task_to_remove)
         elif "complete" in command:
             task_to_complete = command.replace("complete", "").strip()
-            print(f"Task to Complete: {task_to_complete}")
-            complete_task_by_partial_name(task_to_complete)  # Ensure this function is called correctly
+            complete_task_by_name(task_to_complete)
         elif "cancel" in command:
             pygame.mixer.music.stop()
             print("Alarm canceled.")
         elif "exit" in command:
             break
 
-
-def start_voice_command():
-    voice_thread = threading.Thread(target=voice_command)
-    voice_thread.start()
-
-def find_task_by_partial_name(task_name):
-    matches = []
-    for item in tasks_treeview.get_children():
-        task, _ = tasks_treeview.item(item)["values"]
-        if task_name.lower() in task.lower():
-            matches.append(task)
-    return matches
-
-def remove_task_by_partial_name(task_name):
-    matched_tasks = find_task_by_partial_name(task_name)
-    if not matched_tasks:
-        print(f"No task containing '{task_name}' found.")
-        return
-    
-    for task in matched_tasks:
-        remove_task_by_name(task)
-
-def complete_task_by_partial_name(task_name):
-    matched_tasks = find_task_by_partial_name(task_name)
-    if not matched_tasks:
-        print(f"No task containing '{task_name}' found.")
-        return
-
-    for task in matched_tasks:
-        complete_task_by_name(task)
-
-def select_custom_sound():
-    if sound_choice.get() == "custom":
-        custom_sound_path = filedialog.askopenfilename(title="Select Sound File", filetypes=(("WAV files", "*.wav"), ("All files", "*.*")))
-        if custom_sound_path:  # only set if a file is selected
-            global DEFAULT_SOUND
-            DEFAULT_SOUND = custom_sound_path
 
 
 # [ ... imports and function declarations ... ]
@@ -436,7 +380,7 @@ priority_combos = []
 # Radio buttons for sound choice
 sound_choice = tk.StringVar(value="default")
 tk.Radiobutton(main_frame, text="Use Default Ring", variable=sound_choice, value="default", font=font_style).grid(row=2, column=0, pady=15)
-tk.Radiobutton(main_frame, text="Use Custom Ring", variable=sound_choice, value="custom", font=font_style, command=select_custom_sound).grid(row=2, column=1, pady=15)
+tk.Radiobutton(main_frame, text="Use Custom Ring", variable=sound_choice, value="custom", font=font_style).grid(row=2, column=1, pady=15)
 tk.Radiobutton(main_frame, text="Use Text-to-Speech", variable=sound_choice, value="tts", font=font_style).grid(row=2, column=2, pady=15)
 
 
